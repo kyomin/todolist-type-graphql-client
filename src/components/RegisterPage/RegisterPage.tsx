@@ -42,6 +42,7 @@ function RegisterPage(props: any) {
     e.preventDefault();
 
     try {
+      /* Validation Check In Client */
       if (name.length < 1) {
         alert("이름은 1글자 이상 입력해야 합니다.");
         return;
@@ -71,7 +72,7 @@ function RegisterPage(props: any) {
       const result = await dispatch(registerUser(dataToSubmit, register));
 
       alert(
-        `${result.payload.name}님 반갑습니다.\n 회원가입을 성공적으로 마쳤습니다.`
+        `${result.payload.name}님 반갑습니다. \n 회원가입을 성공적으로 마쳤습니다.`
       );
       props.history.push("/");
     } catch (err) {

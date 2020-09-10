@@ -1,4 +1,4 @@
-import { LOGIN_USER, REGISTER_USER } from "./types";
+import { LOGIN_USER, REGISTER_USER, UPDATE_USER } from "./types";
 import { LoginSubmit, RegisterSubmit } from "../../interface/User";
 
 export async function loginUser(dataToSubmit: LoginSubmit, login: any) {
@@ -36,6 +36,25 @@ export async function registerUser(
 
     return {
       type: REGISTER_USER,
+      payload: userInfo,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function updateUser(dataToSubmit: string, update: any) {
+  try {
+    const response = await update({
+      variables: {
+        newPassword: dataToSubmit,
+      },
+    });
+
+    const userInfo = response.data.update;
+
+    return {
+      type: UPDATE_USER,
       payload: userInfo,
     };
   } catch (err) {

@@ -32,6 +32,7 @@ function LoginPage(props: any) {
     e.preventDefault();
 
     try {
+      /* Validation Check In Client */
       if (password.length < 8) {
         alert("패스워드가 너무 짧습니다. 8자 이상 입력해 주십시오.");
         return;

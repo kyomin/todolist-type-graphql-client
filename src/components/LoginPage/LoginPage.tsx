@@ -11,7 +11,7 @@ import "./LoginPage.scss";
 
 const { Title } = Typography;
 
-function LoginPage() {
+function LoginPage(props: any) {
   /* make mutation function */
   const [login] = useMutation(LOGIN);
 
@@ -32,15 +32,26 @@ function LoginPage() {
     e.preventDefault();
 
     try {
+      if (password.length < 8) {
+        alert("패스워드가 너무 짧습니다. 8자 이상 입력해 주십시오.");
+        return;
+      }
+
+      if (password.length > 20) {
+        alert("패스워드가 너무 깁니다. 20자 이내로 작성해 주십시오.");
+        return;
+      }
+
       const dataToSubmit: LoginSubmit = {
         email,
         password,
       };
 
-      const userInfo = await dispatch(loginUser(dataToSubmit, login));
-      if (userInfo) localStorage.setItem("token", userInfo.payload.accessToken);
+      await dispatch(loginUser(dataToSubmit, login));
+      props.history.push("/");
     } catch (err) {
-      alert(err.graphQLErrors);
+      alert(err.graphQLErrors[0].message);
+      console.error(err);
     }
   };
 

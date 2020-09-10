@@ -1,5 +1,5 @@
-import { LOGIN_USER } from "./types";
-import { LoginSubmit } from "../../interface/User";
+import { LOGIN_USER, REGISTER_USER } from "./types";
+import { LoginSubmit, RegisterSubmit } from "../../interface/User";
 
 export async function loginUser(dataToSubmit: LoginSubmit, login: any) {
   try {
@@ -17,6 +17,28 @@ export async function loginUser(dataToSubmit: LoginSubmit, login: any) {
       payload: userInfo,
     };
   } catch (err) {
-    alert(err.graphQLErrors[0].message);
+    throw err;
+  }
+}
+
+export async function registerUser(
+  dataToSubmit: RegisterSubmit,
+  register: any
+) {
+  try {
+    const response = await register({
+      variables: {
+        registerInput: dataToSubmit,
+      },
+    });
+
+    const userInfo = response.data.register;
+
+    return {
+      type: REGISTER_USER,
+      payload: userInfo,
+    };
+  } catch (err) {
+    throw err;
   }
 }

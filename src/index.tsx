@@ -26,6 +26,11 @@ const GRAPHQL_ENDPOINT = "http://localhost:4000/graphql";
 const client = new ApolloClient({
   uri: GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
+  headers: {
+    authorization: localStorage.getItem("token")
+      ? "Bearer " + localStorage.getItem("token")
+      : "Bearer ",
+  },
 });
 
 ReactDOM.render(

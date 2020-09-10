@@ -28,7 +28,8 @@
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^10.0.2",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "use-react-router": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

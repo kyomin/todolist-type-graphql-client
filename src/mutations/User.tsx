@@ -12,3 +12,14 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const REGISTER = gql`
+  mutation register($registerInput: RegisterInput!) {
+    register(registerInput: $registerInput) {
+      id
+      name
+      email
+      role
+    }
+  }
+`;

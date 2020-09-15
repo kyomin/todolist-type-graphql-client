@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { useDispatch } from "react-redux";
 import { Form, Input, Typography, Button } from "antd";
-import { registerUser } from "../../actions/User/userAction";
-import { RegisterSubmit } from "../../interface/User";
+import { RegisterSubmit } from "../../types/interface/User";
 import { REGISTER } from "../../mutations/User";
 
 import "./RegisterPage.scss";
@@ -14,8 +12,6 @@ const { Title } = Typography;
 function RegisterPage(props: any) {
   /* make mutation function */
   const [register] = useMutation(REGISTER);
-
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -69,10 +65,16 @@ function RegisterPage(props: any) {
         name,
       };
 
-      const result = await dispatch(registerUser(dataToSubmit, register));
+      const response = await register({
+        variables: {
+          registerInput: dataToSubmit,
+        },
+      });
+
+      const userInfo = response.data.register;
 
       alert(
-        `${result.payload.name}님 반갑습니다. \n 회원가입을 성공적으로 마쳤습니다.`
+        `${userInfo.name}님 반갑습니다. \n 회원가입을 성공적으로 마쳤습니다.`
       );
       props.history.push("/");
     } catch (err) {

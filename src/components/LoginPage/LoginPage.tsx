@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { useDispatch } from "react-redux";
 import { Form, Input, Typography, Button } from "antd";
-import { loginUser } from "../../actions/User/userAction";
-import { LoginSubmit } from "../../interface/User";
+import { LoginSubmit } from "../../types/interface/User";
 import { LOGIN } from "../../mutations/User";
 
 import "./LoginPage.scss";
@@ -14,8 +12,6 @@ const { Title } = Typography;
 function LoginPage(props: any) {
   /* make mutation function */
   const [login] = useMutation(LOGIN);
-
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,8 +44,21 @@ function LoginPage(props: any) {
         password,
       };
 
-      await dispatch(loginUser(dataToSubmit, login));
-      props.history.push("/");
+      const response = await login({
+        variables: {
+          loginInput: dataToSubmit,
+        },
+      });
+
+      const userInfo = response.data.login;
+
+      /* 
+        토큰 저장 후 랜딩 페이지로 이동해서 인증이 잘 돼야 하는데 안 되고 있다.
+        아마 토큰 저장 후에 라우팅 하는 순서가 잘 안 지켜지는 것 같다.
+        출근하고 확인하자 !
+      */
+      await localStorage.setItem("token", userInfo.accessToken);
+      if (localStorage.getItem("token")) document.location.href = "/";
     } catch (err) {
       alert(err.graphQLErrors[0].message);
       console.error(err);

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { useDispatch } from "react-redux";
 import { Form, Input, Typography, Button } from "antd";
 import { UPDATE_PASSWORD } from "../../mutations/User";
-import { updateUser } from "../../actions/User/userAction";
 
 import "./UpdatePage.scss";
 
@@ -13,8 +11,6 @@ const { Title } = Typography;
 function UpdatePage(props: any) {
   /* make mutation function */
   const [update] = useMutation(UPDATE_PASSWORD);
-
-  const dispatch = useDispatch();
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -52,9 +48,11 @@ function UpdatePage(props: any) {
         return;
       }
 
-      const dataToSubmit = newPassword;
-
-      await dispatch(updateUser(dataToSubmit, update));
+      const response = await update({
+        variables: {
+          newPassword: newPassword,
+        },
+      });
 
       onLogoutHandler();
       alert(

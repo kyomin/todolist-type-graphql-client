@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
 import { Form, Input, Typography, Button } from "antd";
 import { UPDATE_PASSWORD } from "../../mutations/User";
+import { updateUser } from "../../actions/User/userAction";
 
 import "./UpdatePage.scss";
 
 const { Title } = Typography;
 
 function UpdatePage(props: any) {
-  /* make mutation function */
-  const [update] = useMutation(UPDATE_PASSWORD);
-
+  const [update] = useMutation(UPDATE_PASSWORD); //  make mutation function
+  const dispatch = useDispatch();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
@@ -48,17 +49,16 @@ function UpdatePage(props: any) {
         return;
       }
 
-      const response = await update({
-        variables: {
-          newPassword: newPassword,
-        },
-      });
+      await dispatch(updateUser(newPassword, update));
 
-      onLogoutHandler();
-      alert(
-        "비밀번호 변경이 완료되었습니다. \n 새 비밀번호로 다시 로그인 해 주십시오!"
-      );
-      props.history.push("/login");
+      await onLogoutHandler();
+
+      if (!localStorage.getItem("token")) {
+        await alert(
+          "비밀번호 변경이 완료되었습니다. \n 새 비밀번호로 다시 로그인 해 주십시오!"
+        );
+        document.location.href = "/login";
+      }
     } catch (err) {
       alert(err.graphQLErrors[0].message);
       console.error(err);

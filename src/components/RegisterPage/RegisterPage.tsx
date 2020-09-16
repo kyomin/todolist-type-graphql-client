@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
 import { Form, Input, Typography, Button } from "antd";
 import { RegisterSubmit } from "../../types/interface/User";
 import { REGISTER } from "../../mutations/User";
+import { registerUser } from "../../actions/User/userAction";
 
 import "./RegisterPage.scss";
 
 const { Title } = Typography;
 
 function RegisterPage(props: any) {
-  /* make mutation function */
-  const [register] = useMutation(REGISTER);
-
+  const [register] = useMutation(REGISTER); //  make mutation function
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -65,13 +66,11 @@ function RegisterPage(props: any) {
         name,
       };
 
-      const response = await register({
-        variables: {
-          registerInput: dataToSubmit,
-        },
-      });
+      const response = await await dispatch(
+        registerUser(dataToSubmit, register)
+      );
 
-      const userInfo = response.data.register;
+      const userInfo = response.payload;
 
       alert(
         `${userInfo.name}님 반갑습니다. \n 회원가입을 성공적으로 마쳤습니다.`

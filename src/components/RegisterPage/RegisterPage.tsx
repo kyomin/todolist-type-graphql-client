@@ -66,9 +66,7 @@ function RegisterPage(props: any) {
         name,
       };
 
-      const response = await await dispatch(
-        registerUser(dataToSubmit, register)
-      );
+      const response = await dispatch(registerUser(dataToSubmit, register));
 
       const userInfo = response.payload;
 

@@ -43,7 +43,7 @@ export async function registerUser(
       },
     });
 
-    const userInfo = response.data.register;
+    const userInfo: UserInfo = response.data.register;
 
     return {
       type: REGISTER_USER,

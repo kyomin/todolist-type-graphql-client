@@ -10,10 +10,6 @@ export default function (state = {}, action: any) {
       return { ...state, todos: action.payload };
       break;
 
-    case CHANGE_TODO_STATUS:
-      return { ...state, todoStatus: action.payload };
-      break;
-
     case MAKE_TODO:
       return { ...state, todoInfo: action.payload };
       break;

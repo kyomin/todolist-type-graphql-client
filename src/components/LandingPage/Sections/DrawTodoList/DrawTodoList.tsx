@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ import { GET_TODOS } from "../../../../queries/Todo";
 
 import {
   getTodos,
-  changeTodoStatus,
   changeIndexOfClickedUpdateBtn,
 } from "../../../../actions/Todo/todoAction";
 
@@ -19,18 +18,19 @@ import TodoTab from "../TodoTab/TodoTab";
 import AddTodo from "../AddTodo/AddTodo";
 
 function DrawTodoList() {
-  const { loading, error, data } = useQuery(GET_TODOS, {
-    variables: {},
-  });
+  const [variables, setVariables] = useState({});
   const dispatch = useDispatch();
   const todoState: any = useSelector((state: RootState) => state.Todo);
-
-  const todoStatus: TodoStatus | undefined = todoState.todoStatus;
   const todos: TodoInfo[] = todoState.todos;
+
+  const { loading, error, data, refetch } = useQuery(GET_TODOS, {
+    variables,
+  });
 
   useEffect(() => {
     if (data) dispatch(getTodos(data.todos));
-  }, [data]);
+    refetch(variables);
+  }, [data, variables]);
 
   const drawTodoList = () => {
     return todos.map((todo: any, idx: number) => {

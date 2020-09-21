@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { TodoStatus } from "../types/enum/Todo";
 
 export const GET_ALL_TODOS = gql`
   query getAllTodos {
@@ -17,8 +18,8 @@ export const GET_ALL_TODOS = gql`
 `;
 
 export const GET_TODOS = gql`
-  query getTodos($cursor: Float) {
-    todos(cursor: $cursor) {
+  query getTodos($cursor: Float, $status: TodoStatus) {
+    todos(cursor: $cursor, status: $status) {
       id
       description
       status

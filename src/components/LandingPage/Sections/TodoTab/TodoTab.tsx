@@ -1,32 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Menu } from "antd";
 import { withRouter } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../reducers";
-import { getTodos } from "../../../../actions/Todo/todoAction";
 import { TodoStatus } from "../../../../types/enum/Todo";
 import { GET_TODOS } from "../../../../queries/Todo";
+import {
+  getTodos,
+  changeGetTodoQueryVariables,
+  changeTodoStatus,
+  changePrevTodoStatus,
+} from "../../../../actions/Todo/todoAction";
 
 function TodoTab() {
-  const [variables, setVariables] = useState({});
   const dispatch = useDispatch();
-
-  const { data, refetch } = useQuery(GET_TODOS, {
-    variables,
-  });
+  const todoState: any = useSelector((state: RootState) => state.Todo);
+  const todoStatus: TodoStatus | undefined = todoState.todoStatus;
+  const prevTodoStatus: TodoStatus | undefined = todoState.prevTodoStatus;
 
   useEffect(() => {
-    if (data) dispatch(getTodos(data.todos));
-    refetch(variables);
-  }, [data, variables]);
+    dispatch(changeTodoStatus(undefined));
+    dispatch(changePrevTodoStatus(undefined));
+  }, []);
 
-  const onTodoStateHandler = (e: any) => {
-    setVariables({ status: e.currentTarget.getAttribute("data-status") });
+  const onTodoStateHandler = async (e: any) => {
+    const status = e.currentTarget.getAttribute("data-status");
+
+    // 같은 탭을 눌렀어도 이전 탭 상태를 현재로 교체
+    if (status === todoStatus) {
+      await dispatch(changePrevTodoStatus(status));
+    } else {
+      // 다른 탭을 누른 경우
+      await dispatch(changeTodoStatus(status));
+      await dispatch(changeGetTodoQueryVariables({ status }));
+    }
   };
 
   return (
-    <Menu className="todo_tab_wrap" mode="horizontal">
+    <Menu
+      className="todo_tab_wrap"
+      defaultSelectedKeys={["all"]}
+      mode="horizontal"
+    >
       <Menu.Item key="all">
         <a data-status={undefined} onClick={onTodoStateHandler}>
           전체 보기

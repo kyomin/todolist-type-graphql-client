@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { TodoStatus } from "../types/enum/Todo";
 
 export const GET_ALL_TODOS = gql`
   query getAllTodos {

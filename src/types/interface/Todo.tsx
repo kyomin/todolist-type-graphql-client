@@ -12,3 +12,8 @@ export interface MakeTodoSubmit {
   description: string;
   status: TodoStatus;
 }
+
+export interface TodoQueryVariables {
+  cursor?: number;
+  status?: TodoStatus;
+}

@@ -12,10 +12,6 @@ import { RootState } from "../../../../reducers";
 import "./AddTodo.scss";
 
 function AddTodo() {
-  const { loading, error, data, refetch } = useQuery(GET_TODOS, {
-    variables: {},
-  });
-
   const [makeTodo] = useMutation(MAKE_TODO); //  make mutation function
   const dispatch = useDispatch();
   const [todoDescription, setTodoDescription] = useState("");
@@ -54,14 +50,7 @@ function AddTodo() {
         status: TodoStatus.TODO,
       };
 
-      /* 1. 먼저 할 일 등록을 마치고 */
       await dispatch(makeTodoAction(dataToSubmit, makeTodo));
-
-      /* 2. 업데이트 된 리스트를 새로 불러온다. */
-      await refetch();
-
-      /* 3. 새로 불러온 리스트를 리덕스 스토어에 반영! */
-      await dispatch(getTodos(data.todos));
 
       setTodoDescription("");
     } catch (err) {

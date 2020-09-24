@@ -11,7 +11,6 @@ import {
 } from "../../../../actions/Todo/todoAction";
 
 import "./UpdateTodo.scss";
-import { TodoInfo } from "../../../../types/interface/Todo";
 
 function UpdateTodo(props: any) {
   const [todoDescription, setTodoDescription] = useState(props.description);

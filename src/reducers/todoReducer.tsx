@@ -5,6 +5,7 @@ import {
   CHANGE_GET_TODOS_QUERY_VARIABLES,
   MAKE_TODO,
   UPDATE_TODO_DESCRIPTION,
+  UPDATE_TODO_STATUS,
   CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON,
   DELETE_TODO,
 } from "../actions/Todo/types";
@@ -32,6 +33,10 @@ export default function (state = {}, action: any) {
       break;
 
     case UPDATE_TODO_DESCRIPTION:
+      return { ...state, updatedTodoInfo: action.payload };
+      break;
+
+    case UPDATE_TODO_STATUS:
       return { ...state, updatedTodoInfo: action.payload };
       break;
 

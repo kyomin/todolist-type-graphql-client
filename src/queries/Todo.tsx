@@ -6,6 +6,7 @@ export const GET_ALL_TODOS = gql`
       id
       description
       status
+      createdAt
 
       createdBy: user {
         id
@@ -22,6 +23,7 @@ export const GET_TODOS = gql`
       id
       description
       status
+      createdAt
 
       createdBy: user {
         id

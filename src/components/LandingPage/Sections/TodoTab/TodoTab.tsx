@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import { Menu } from "antd";
 import { withRouter } from "react-router-dom";
-import { useQuery } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../reducers";
 import { TodoStatus } from "../../../../types/enum/Todo";
-import { GET_TODOS } from "../../../../queries/Todo";
 import {
-  getTodos,
   changeGetTodoQueryVariables,
   changeTodoStatus,
   changePrevTodoStatus,
@@ -17,7 +14,6 @@ function TodoTab() {
   const dispatch = useDispatch();
   const todoState: any = useSelector((state: RootState) => state.Todo);
   const todoStatus: TodoStatus | undefined = todoState.todoStatus;
-  const prevTodoStatus: TodoStatus | undefined = todoState.prevTodoStatus;
 
   useEffect(() => {
     dispatch(changeTodoStatus(undefined));

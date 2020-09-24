@@ -6,6 +6,7 @@ import {
   CHANGE_GET_TODOS_QUERY_VARIABLES,
   MAKE_TODO,
   UPDATE_TODO_DESCRIPTION,
+  UPDATE_TODO_STATUS,
   DELETE_TODO,
 } from "./types";
 import {
@@ -91,6 +92,30 @@ export async function updateTodoDescriptionAction(
 
     return {
       type: UPDATE_TODO_DESCRIPTION,
+      payload: todoInfo,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function updateTodoStatusAction(
+  id: number,
+  newStatus: TodoStatus,
+  updateTodoStatus: any
+) {
+  try {
+    const response = await updateTodoStatus({
+      variables: {
+        id,
+        newStatus,
+      },
+    });
+
+    const todoInfo: TodoInfo = response.data.updateTodoStatus;
+
+    return {
+      type: UPDATE_TODO_STATUS,
       payload: todoInfo,
     };
   } catch (err) {

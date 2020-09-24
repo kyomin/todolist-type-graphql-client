@@ -6,6 +6,7 @@ export interface TodoInfo {
   description: string;
   status: TodoStatus;
   createdBy: UserInfo;
+  createdAt: string;
 }
 
 export interface MakeTodoSubmit {

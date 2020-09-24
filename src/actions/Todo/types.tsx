@@ -10,4 +10,5 @@ export const CHANGE_GET_TODOS_QUERY_VARIABLES =
 /* For Mutation */
 export const MAKE_TODO = "MAKE_TODO";
 export const UPDATE_TODO_DESCRIPTION = "UPDATE_TODO_DESCRIPTION";
+export const UPDATE_TODO_STATUS = "UPDATE_TODO_STATUS";
 export const DELETE_TODO = "DELETE_TODO";

@@ -22,6 +22,16 @@ export const UPDATE_TODO_DESCRIPTION = gql`
   }
 `;
 
+export const UPDATE_TODO_STATUS = gql`
+  mutation updateTodoStatus($id: Float!, $newStatus: TodoStatus!) {
+    updateTodoStatus(id: $id, newStatus: $newStatus) {
+      id
+      description
+      status
+    }
+  }
+`;
+
 export const DELETE_TODO = gql`
   mutation deleteTodo($id: Float!) {
     deleteTodo(id: $id) {

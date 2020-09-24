@@ -7,13 +7,14 @@ import { RootState } from "../../../../reducers";
 import { TodoStatus } from "../../../../types/enum/Todo";
 import { TodoInfo, TodoQueryVariables } from "../../../../types/interface/Todo";
 import { GET_TODOS } from "../../../../queries/Todo";
-import { DELETE_TODO } from "../../../../mutations/Todo";
+import { UPDATE_TODO_STATUS, DELETE_TODO } from "../../../../mutations/Todo";
 
 import {
   getTodos,
   changePrevTodoStatus,
   changeGetTodoQueryVariables,
   changeTodoIdOfClickedUpdateBtn,
+  updateTodoStatusAction,
   deleteTodoAction,
 } from "../../../../actions/Todo/todoAction";
 
@@ -41,7 +42,9 @@ function DrawTodoList() {
   const [cursor, setCursor] = useState(-1);
   const [isMoreData, setIsMoreData] = useState(true);
 
-  const [deleteTodo] = useMutation(DELETE_TODO); //  make mutation function
+  /* make mutation function */
+  const [updateTodoStatus] = useMutation(UPDATE_TODO_STATUS);
+  const [deleteTodo] = useMutation(DELETE_TODO);
   const dispatch = useDispatch();
   const todoState: any = useSelector((state: RootState) => state.Todo);
   const todoStatus: TodoStatus | undefined = todoState.todoStatus;
@@ -84,9 +87,29 @@ function DrawTodoList() {
     await dispatch(changeTodoIdOfClickedUpdateBtn(id));
   };
 
+  const handleCompleteBtn = async (id: number) => {
+    try {
+      if (typeof id === "string")
+        await dispatch(
+          updateTodoStatusAction(
+            parseFloat(id),
+            TodoStatus.DONE,
+            updateTodoStatus
+          )
+        );
+      else
+        await dispatch(
+          updateTodoStatusAction(id, TodoStatus.DONE, updateTodoStatus)
+        );
+
+      window.location.reload(false);
+    } catch (err) {
+      console.error(err);
+      alert("todo 업데이트에 실패했습니다 !");
+    }
+  };
+
   const handleDelete = async (id: number) => {
-    console.log("todo id in handleDelete : ", id);
-    console.log("todo id type in handleDelete : ", typeof id);
     try {
       if (typeof id === "string")
         await dispatch(deleteTodoAction(parseFloat(id), deleteTodo));
@@ -127,6 +150,14 @@ function DrawTodoList() {
               >
                 삭제
               </Button>
+              <Button
+                className={
+                  todoStatus === TodoStatus.TODO ? "complete_btn" : "hidden"
+                }
+                onClick={() => handleCompleteBtn(todo.id)}
+              >
+                완료
+              </Button>
             </div>
           </div>
         );
@@ -162,7 +193,7 @@ function DrawTodoList() {
           ) : (
             <Fragment></Fragment>
           )}
-          <AddTodo todoList={todoList} />
+          <AddTodo />
         </div>
       </div>
     </div>

@@ -4,21 +4,18 @@ import { useMutation } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
 import { MAKE_TODO } from "../../../../mutations/Todo";
 import { makeTodoAction } from "../../../../actions/Todo/todoAction";
-import { TodoInfo, MakeTodoSubmit } from "../../../../types/interface/Todo";
+import { MakeTodoSubmit } from "../../../../types/interface/Todo";
 import { TodoStatus } from "../../../../types/enum/Todo";
 import { RootState } from "../../../../reducers";
 
 import "./AddTodo.scss";
 
-function AddTodo(props: any) {
+function AddTodo() {
   const [makeTodo] = useMutation(MAKE_TODO); //  make mutation function
   const dispatch = useDispatch();
   const [todoDescription, setTodoDescription] = useState("");
   const userState: any = useSelector((state: RootState) => state.User);
-  const todoState: any = useSelector((state: RootState) => state.Todo);
-
   const userData: any = userState.userData;
-  const todos: any = todoState.todos;
 
   const handleChange = (e: any) => {
     setTodoDescription(e.currentTarget.value);
@@ -64,7 +61,7 @@ function AddTodo(props: any) {
   };
 
   // 인증이 되어있고, todo 리스트가 잘 렌더링되어 있다면
-  if (userData && todos) {
+  if (userData) {
     return (
       <div className="add_todo_wrap">
         <form className="add_form" onSubmit={handleSubmit}>

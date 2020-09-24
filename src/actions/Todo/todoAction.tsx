@@ -6,6 +6,7 @@ import {
   CHANGE_GET_TODOS_QUERY_VARIABLES,
   MAKE_TODO,
   UPDATE_TODO_DESCRIPTION,
+  DELETE_TODO,
 } from "./types";
 import {
   TodoInfo,
@@ -90,6 +91,25 @@ export async function updateTodoDescriptionAction(
 
     return {
       type: UPDATE_TODO_DESCRIPTION,
+      payload: todoInfo,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function deleteTodoAction(id: number, deleteTodo: any) {
+  try {
+    const response = await deleteTodo({
+      variables: {
+        id,
+      },
+    });
+
+    const todoInfo: TodoInfo = response.data.deleteTodo;
+
+    return {
+      type: DELETE_TODO,
       payload: todoInfo,
     };
   } catch (err) {

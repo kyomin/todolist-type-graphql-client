@@ -58,36 +58,10 @@ function UpdateTodo(props: any) {
         )
       );
 
-      /* 2. 업데이트가 반영된 리스트를 만들어 DrawTodoList 컴포넌트로 전달한다. */
-      const id: number = response.payload.id;
-      const description: string = response.payload.description;
-      const updatedTodoList: TodoInfo[] = [];
+      /* 2. 업데이트가 반영되도록 새로고침 */
+      window.location.reload(false);
 
-      for (let i = 0; i < props.todoList.length; i++) {
-        let todo: TodoInfo;
-        const existingTodo: TodoInfo = props.todoList[i];
-        if (existingTodo.id === id) {
-          todo = {
-            id: existingTodo.id,
-            description: description,
-            status: existingTodo.status,
-            createdBy: existingTodo.createdBy,
-          };
-        } else {
-          todo = {
-            id: existingTodo.id,
-            description: existingTodo.description,
-            status: existingTodo.status,
-            createdBy: existingTodo.createdBy,
-          };
-        }
-
-        updatedTodoList.push(todo);
-      }
-
-      props.refreshUpdatedDescription(updatedTodoList);
-
-      /* 2. 수정 버튼이 눌리지 않은 상태로 초기화 */
+      /* 3. 수정 버튼이 눌리지 않은 상태로 초기화 */
       await dispatch(changeTodoIdOfClickedUpdateBtn(undefined));
     } catch (err) {
       console.error(err);

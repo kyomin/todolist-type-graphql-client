@@ -6,6 +6,7 @@ import {
   MAKE_TODO,
   UPDATE_TODO_DESCRIPTION,
   CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON,
+  DELETE_TODO,
 } from "../actions/Todo/types";
 
 export default function (state = {}, action: any) {
@@ -36,6 +37,10 @@ export default function (state = {}, action: any) {
 
     case CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON:
       return { ...state, todoIdOfClickedUpdateBtn: action.payload };
+      break;
+
+    case DELETE_TODO:
+      return { ...state, deletedTodoInfo: action.payload };
       break;
 
     default:

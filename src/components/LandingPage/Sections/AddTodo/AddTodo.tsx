@@ -50,19 +50,10 @@ function AddTodo(props: any) {
       };
 
       /* 1. 먼저 할 일 등록을 마치고 */
-      const response = await dispatch(makeTodoAction(dataToSubmit, makeTodo));
+      await dispatch(makeTodoAction(dataToSubmit, makeTodo));
 
-      /* 2. 등록이 반영된 리스트를 만들어 DrawTodoList 컴포넌트로 전달한다. */
-      const createdTodoList: TodoInfo[] = [];
-      const newTodo: TodoInfo = {
-        id: response.payload.id,
-        description: response.payload.description,
-        status: response.payload.status,
-        createdBy: response.payload.createdBy,
-      };
-
-      createdTodoList.push(newTodo);
-      props.refreshCreatedTodo(createdTodoList.concat(props.todoList));
+      /* 2. 등록이 반영되도록 새로고침 */
+      window.location.reload(false);
 
       setTodoDescription("");
     } catch (err) {

@@ -1,18 +1,20 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "antd";
 import { RootState } from "../../../../reducers";
 import { TodoStatus } from "../../../../types/enum/Todo";
 import { TodoInfo, TodoQueryVariables } from "../../../../types/interface/Todo";
 import { GET_TODOS } from "../../../../queries/Todo";
+import { DELETE_TODO } from "../../../../mutations/Todo";
 
 import {
   getTodos,
   changePrevTodoStatus,
   changeGetTodoQueryVariables,
   changeTodoIdOfClickedUpdateBtn,
+  deleteTodoAction,
 } from "../../../../actions/Todo/todoAction";
 
 import "./DrawTodoList.scss";
@@ -22,11 +24,24 @@ import UpdateTodo from "../UpdateTodo/UpdateTodo";
 
 const DATA_LIMIT = 3;
 
+/*
+    아폴로 GraphQL 쿼리를 이용해 데이터를 가져오면
+    커서 기반 페이지네이션을 구현하는데 있어
+    너무 많은 에로사항이 생긴다.
+    
+    특히, Mutation 작업이 반영되기 위해서는 새로고침을 할 수 밖에 없는데,
+    좀 더 리덕스와 상호작용하면서 우아하게 동작할 수 있는 방법을 추후 생각해보자.
+
+    이는 전체 데이터를 가져와서 리덕스 스토어에 저장 후,
+    중간 데이터가 변하면 상태의 변화가 일어나 바로 반영되는 것과 달리,
+    데이터를 커서로 끊어서 가져오기 때문에 관리의 한계가 생긴 것이다.
+*/
 function DrawTodoList() {
   const [todoList, setTodoList] = useState<TodoInfo[]>([]);
   const [cursor, setCursor] = useState(-1);
   const [isMoreData, setIsMoreData] = useState(true);
 
+  const [deleteTodo] = useMutation(DELETE_TODO); //  make mutation function
   const dispatch = useDispatch();
   const todoState: any = useSelector((state: RootState) => state.Todo);
   const todoStatus: TodoStatus | undefined = todoState.todoStatus;
@@ -69,23 +84,19 @@ function DrawTodoList() {
     await dispatch(changeTodoIdOfClickedUpdateBtn(id));
   };
 
-  /*
-    UpdateTodo 컴포넌트로부터 업데이트 된 리스트를 받아와서 다시 셋팅한다.
-    데이터가 업데이트 되면, 위의 useEffect가 재 실행돼서 원치 않는 동작을 하게 되지만,
-    다시 여기로 넘어와 셋팅을 하게 되면 원하는 결과를 얻게할 수 있다.
-  */
-  const refreshUpdatedDescription = async (updatedTodoList: TodoInfo[]) => {
-    setTodoList(updatedTodoList);
-  };
+  const handleDelete = async (id: number) => {
+    console.log("todo id in handleDelete : ", id);
+    console.log("todo id type in handleDelete : ", typeof id);
+    try {
+      if (typeof id === "string")
+        await dispatch(deleteTodoAction(parseFloat(id), deleteTodo));
+      else await dispatch(deleteTodoAction(id, deleteTodo));
 
-  /*
-    등록을 하면 현재 화면의 리스트에 추가가 된다.
-    하지만, DB 반영도 잘 되는데, 탭을 변경해서 서버로 재 쿼리를 날리면
-    새로운 데이터부터 잘 가져와지지 않는다.
-    이 부분 추후에 해결하자!
-  */
-  const refreshCreatedTodo = async (createdTodoList: TodoInfo[]) => {
-    setTodoList(createdTodoList);
+      window.location.reload(false);
+    } catch (err) {
+      console.error(err);
+      alert("todo 삭제에 실패했습니다 !");
+    }
   };
 
   const drawTodoList = () => {
@@ -93,11 +104,7 @@ function DrawTodoList() {
       if (todoIdOfClickedUpdateBtn && todoIdOfClickedUpdateBtn === todo.id) {
         return (
           <div key={idx} className="todo_wrap">
-            <UpdateTodo
-              todoList={todoList}
-              description={todo.description}
-              refreshUpdatedDescription={refreshUpdatedDescription}
-            />
+            <UpdateTodo description={todo.description} />
           </div>
         );
       } else {
@@ -113,6 +120,12 @@ function DrawTodoList() {
                 onClick={() => handleUpdateBtnClicked(todo.id)}
               >
                 수정
+              </Button>
+              <Button
+                className="delete_btn"
+                onClick={() => handleDelete(todo.id)}
+              >
+                삭제
               </Button>
             </div>
           </div>
@@ -149,10 +162,7 @@ function DrawTodoList() {
           ) : (
             <Fragment></Fragment>
           )}
-          <AddTodo
-            todoList={todoList}
-            refreshCreatedTodo={refreshCreatedTodo}
-          />
+          <AddTodo todoList={todoList} />
         </div>
       </div>
     </div>

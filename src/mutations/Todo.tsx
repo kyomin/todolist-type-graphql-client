@@ -21,3 +21,12 @@ export const UPDATE_TODO_DESCRIPTION = gql`
     }
   }
 `;
+
+export const DELETE_TODO = gql`
+  mutation deleteTodo($id: Float!) {
+    deleteTodo(id: $id) {
+      description
+      status
+    }
+  }
+`;

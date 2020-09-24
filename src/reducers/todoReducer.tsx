@@ -4,6 +4,8 @@ import {
   CHANGE_PREV_TODO_STATUS,
   CHANGE_GET_TODOS_QUERY_VARIABLES,
   MAKE_TODO,
+  UPDATE_TODO_DESCRIPTION,
+  CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON,
 } from "../actions/Todo/types";
 
 export default function (state = {}, action: any) {
@@ -25,7 +27,15 @@ export default function (state = {}, action: any) {
       break;
 
     case MAKE_TODO:
-      return { ...state, todoInfo: action.payload };
+      return { ...state, createdTodoInfo: action.payload };
+      break;
+
+    case UPDATE_TODO_DESCRIPTION:
+      return { ...state, updatedTodoInfo: action.payload };
+      break;
+
+    case CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON:
+      return { ...state, todoIdOfClickedUpdateBtn: action.payload };
       break;
 
     default:

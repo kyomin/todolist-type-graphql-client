@@ -1,17 +1,16 @@
 import React, { useState, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
-import { GET_TODOS } from "../../../../queries/Todo";
 import { MAKE_TODO } from "../../../../mutations/Todo";
-import { getTodos, makeTodoAction } from "../../../../actions/Todo/todoAction";
-import { MakeTodoSubmit } from "../../../../types/interface/Todo";
+import { makeTodoAction } from "../../../../actions/Todo/todoAction";
+import { TodoInfo, MakeTodoSubmit } from "../../../../types/interface/Todo";
 import { TodoStatus } from "../../../../types/enum/Todo";
 import { RootState } from "../../../../reducers";
 
 import "./AddTodo.scss";
 
-function AddTodo() {
+function AddTodo(props: any) {
   const [makeTodo] = useMutation(MAKE_TODO); //  make mutation function
   const dispatch = useDispatch();
   const [todoDescription, setTodoDescription] = useState("");
@@ -50,7 +49,20 @@ function AddTodo() {
         status: TodoStatus.TODO,
       };
 
-      await dispatch(makeTodoAction(dataToSubmit, makeTodo));
+      /* 1. 먼저 할 일 등록을 마치고 */
+      const response = await dispatch(makeTodoAction(dataToSubmit, makeTodo));
+
+      /* 2. 등록이 반영된 리스트를 만들어 DrawTodoList 컴포넌트로 전달한다. */
+      const createdTodoList: TodoInfo[] = [];
+      const newTodo: TodoInfo = {
+        id: response.payload.id,
+        description: response.payload.description,
+        status: response.payload.status,
+        createdBy: response.payload.createdBy,
+      };
+
+      createdTodoList.push(newTodo);
+      props.refreshCreatedTodo(createdTodoList.concat(props.todoList));
 
       setTodoDescription("");
     } catch (err) {

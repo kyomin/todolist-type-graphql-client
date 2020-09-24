@@ -2,9 +2,10 @@ import {
   GET_TODOS,
   CHANGE_TODO_STATUS,
   CHANGE_PREV_TODO_STATUS,
-  CHANGE_INDEX_Of_CLICKED_UPDATE_BUTTON,
+  CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON,
   CHANGE_GET_TODOS_QUERY_VARIABLES,
   MAKE_TODO,
+  UPDATE_TODO_DESCRIPTION,
 } from "./types";
 import {
   TodoInfo,
@@ -43,10 +44,10 @@ export function changePrevTodoStatus(todoStatus: TodoStatus | undefined) {
   };
 }
 
-export function changeIndexOfClickedUpdateBtn(idx: number) {
+export function changeTodoIdOfClickedUpdateBtn(id: number | undefined) {
   return {
-    type: CHANGE_INDEX_Of_CLICKED_UPDATE_BUTTON,
-    payload: idx,
+    type: CHANGE_TODO_ID_Of_CLICKED_UPDATE_BUTTON,
+    payload: id,
   };
 }
 
@@ -65,6 +66,30 @@ export async function makeTodoAction(
 
     return {
       type: MAKE_TODO,
+      payload: todoInfo,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function updateTodoDescriptionAction(
+  id: number,
+  newDescription: string,
+  updateTodoDescription: any
+) {
+  try {
+    const response = await updateTodoDescription({
+      variables: {
+        id,
+        newDescription,
+      },
+    });
+
+    const todoInfo: TodoInfo = response.data.updateTodoDescription;
+
+    return {
+      type: UPDATE_TODO_DESCRIPTION,
       payload: todoInfo,
     };
   } catch (err) {

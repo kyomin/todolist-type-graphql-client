@@ -1,4 +1,5 @@
 import {
+  GET_ALL_TODOS,
   GET_TODOS,
   CHANGE_TODO_STATUS,
   CHANGE_PREV_TODO_STATUS,
@@ -15,6 +16,13 @@ import {
   MakeTodoSubmit,
 } from "../../types/interface/Todo";
 import { TodoStatus } from "../../types/enum/Todo";
+
+export function getAllTodos(todos: TodoInfo[]) {
+  return {
+    type: GET_ALL_TODOS,
+    payload: todos,
+  };
+}
 
 export function getTodos(todos: TodoInfo[]) {
   return {

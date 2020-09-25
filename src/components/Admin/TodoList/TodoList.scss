@@ -1,0 +1,49 @@
+.admin_todo_list_wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 5%;
+  padding-bottom: 10%;
+
+  .container {
+    width: 60%;
+
+    .todo_wrap {
+      margin-top: 10%;
+      font-size: 18px;
+      cursor: pointer;
+      border-bottom: 1px solid gray;
+      display: flex;
+      //   justify-content: space-between;
+      justify-content: left;
+
+      .todo_index {
+        color: red;
+        font-weight: 300;
+        margin-right: 10px;
+      }
+
+      .todo_description {
+        width: 75%;
+        font-weight: 600;
+      }
+
+      .todo_user_name {
+        margin-right: 5%;
+        color: blue;
+      }
+
+      .btn_container {
+        display: flex;
+
+        .delete_btn {
+          background: #ff1493;
+          color: white;
+          margin-right: 2%;
+        }
+      }
+    }
+  }
+}

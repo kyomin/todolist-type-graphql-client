@@ -1,4 +1,5 @@
 import {
+  GET_ALL_TODOS,
   GET_TODOS,
   CHANGE_TODO_STATUS,
   CHANGE_PREV_TODO_STATUS,
@@ -12,6 +13,10 @@ import {
 
 export default function (state = {}, action: any) {
   switch (action.type) {
+    case GET_ALL_TODOS:
+      return { ...state, allTodos: action.payload };
+      break;
+
     case GET_TODOS:
       return { ...state, todos: action.payload };
       break;

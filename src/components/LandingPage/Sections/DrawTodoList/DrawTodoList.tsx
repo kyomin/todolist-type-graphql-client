@@ -10,7 +10,6 @@ import { GET_TODOS } from "../../../../queries/Todo";
 import { UPDATE_TODO_STATUS, DELETE_TODO } from "../../../../mutations/Todo";
 
 import {
-  getTodos,
   changePrevTodoStatus,
   changeGetTodoQueryVariables,
   changeTodoIdOfClickedUpdateBtn,
@@ -63,7 +62,6 @@ function DrawTodoList() {
     if (data) {
       if (prevTodoStatus !== todoStatus) {
         setTodoList(data.todos.slice(0, 3));
-        dispatch(getTodos(data.todos.slice(0, 3)));
         dispatch(changePrevTodoStatus(todoStatus));
 
         if (data.todos.length < DATA_LIMIT + 1) setIsMoreData(false);

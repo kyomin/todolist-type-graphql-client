@@ -30,6 +30,12 @@ function TodoList() {
     }
   }, [data]);
 
+  // todo 목록 불러오기 실패 !!
+  if (error) {
+    console.error(error);
+    if (error.graphQLErrors[0]) alert(error.graphQLErrors[0].message);
+  }
+
   const handleDelete = async (id: number) => {
     try {
       if (typeof id === "string")
@@ -42,12 +48,6 @@ function TodoList() {
       alert("todo 삭제에 실패했습니다 !");
     }
   };
-
-  // todo 목록 불러오기 실패 !!
-  if (error) {
-    console.error(error);
-    if (error.graphQLErrors[0]) alert(error.graphQLErrors[0].message);
-  }
 
   const drawTodoList = () => {
     if (todoList) {

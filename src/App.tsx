@@ -15,6 +15,7 @@ import ErrorPage from "./components/ErrorPage/ErrorPage";
 
 /* Import Admin Component */
 import TodoList from "./components/Admin/TodoList/TodoList";
+import UserList from "./components/Admin/UserList/UserList";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
 
           {/* 관리자 페이지는 로그인 해야 하고, 관리자여야 한다 */}
           <Route exact path="/admin/todo" component={AdminCheck(TodoList)} />
+          <Route exact path="/admin/user" component={AdminCheck(UserList)} />
 
           <Route component={ErrorPage} />
         </Switch>

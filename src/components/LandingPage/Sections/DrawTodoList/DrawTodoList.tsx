@@ -81,6 +81,12 @@ function DrawTodoList() {
     }
   }, [data]);
 
+  // todo 목록 불러오기 실패 !!
+  if (error) {
+    console.error(error);
+    if (error.graphQLErrors[0]) alert(error.graphQLErrors[0].message);
+  }
+
   const handleUpdateBtnClicked = async (id: number) => {
     await dispatch(changeTodoIdOfClickedUpdateBtn(id));
   };
@@ -171,12 +177,6 @@ function DrawTodoList() {
       })
     );
   };
-
-  // todo 목록 불러오기 실패 !!
-  if (error) {
-    console.error(error);
-    if (error.graphQLErrors[0]) alert(error.graphQLErrors[0].message);
-  }
 
   return (
     <div>

@@ -34,3 +34,14 @@ export const UPDATE_PASSWORD = gql`
     }
   }
 `;
+
+export const DELETE_USER = gql`
+  mutation deleteUser($id: Float!) {
+    deleteUser(id: $id) {
+      deleteSuccess
+      name
+      email
+      role
+    }
+  }
+`;

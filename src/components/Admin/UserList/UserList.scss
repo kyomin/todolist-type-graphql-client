@@ -1,4 +1,4 @@
-.admin_todo_list_wrap {
+.admin_user_list_wrap {
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,7 +10,7 @@
   .container {
     width: 60%;
 
-    .todo_wrap {
+    .user_wrap {
       margin-top: 10%;
       font-size: 18px;
       cursor: pointer;
@@ -18,18 +18,18 @@
       display: flex;
       justify-content: left;
 
-      .todo_index {
+      .user_id {
         color: red;
         font-weight: 300;
-        margin-right: 10px;
+        margin-right: 5%;
       }
 
-      .todo_description {
+      .user_email {
         width: 75%;
         font-weight: 600;
       }
 
-      .todo_user_name {
+      .user_name {
         margin-right: 5%;
         color: blue;
       }

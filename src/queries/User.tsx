@@ -10,3 +10,14 @@ export const AUTH = gql`
     }
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query getAllUsers {
+    allUsers {
+      id
+      name
+      email
+      role
+    }
+  }
+`;

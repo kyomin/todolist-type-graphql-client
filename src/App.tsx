@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import AuthenticationCheck from "./hoc/auth";
 import AdminCheck from "./hoc/checkAdmin";
-import { RoleStatus } from "./types/enum/User";
 
 /* Import Component */
 import NavBar from "./components/NavBar/NavBar";

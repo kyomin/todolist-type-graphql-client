@@ -1,7 +1,7 @@
 # todolist-type-graphql-client   
 ## make todo list using React and TypeScript and Apollo Client      
 
-서버 프로젝트의 디렉토리 구조는 다음과 같습니다.      
+클라이언트 프로젝트의 디렉토리 구조는 다음과 같습니다.      
 
 `/src/actions`                    => 리덕스의 액션(action) 정의     
 `/src/components`                 => 페이지 뷰를 위한 컴포넌트 정의   
